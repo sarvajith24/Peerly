@@ -1,0 +1,7 @@
+{
+  "appId": "com.peerly.app",
+  "appName": "Peerly",
+  "webDir": "web",
+  "server": { "androidScheme": "http" },
+  "android": { "allowMixedContent": true }
+}

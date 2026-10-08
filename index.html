@@ -1,0 +1,284 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#fef6e5"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Peerly">
+<link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icons/icon-192.png"><link rel="apple-touch-icon" href="icons/icon-192.png"><title>Peerly</title>
+<style>
+:root{--bg:#FFF8E8;--cd:#FFFDF7;--tx:#211A18;--mu:#766C67;--br:rgba(33,26,24,.10);--pr:#C1121F;--sf:#F6EAD1}
+:root.d{--bg:#15110d;--cd:#221b15;--tx:#f7ede0;--mu:#a8998c;--br:#34291f;--sf:#33271c}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:system-ui,Arial,sans-serif;background:var(--bg);color:var(--tx)}
+.app{max-width:500px;margin:auto;height:100dvh;display:flex;flex-direction:column;background:var(--bg);position:relative;overflow:hidden}
+header{padding:env(safe-area-inset-top) 18px 0;height:calc(60px + env(safe-area-inset-top));display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--br)}
+.logo{display:flex;align-items:center;gap:8px;font-size:23px;font-weight:800;color:var(--pr)}.logo img{height:30px}
+.bell{position:relative;width:38px;height:38px;border-radius:50%;background:var(--sf);display:flex;align-items:center;justify-content:center;cursor:pointer}
+#bd,#nb{display:none;position:absolute;background:var(--pr);color:#fff;font:700 10px/16px system-ui;min-width:16px;height:16px;border-radius:8px;text-align:center;top:-2px;right:-2px;font-style:normal;padding:0 4px}
+main{flex:1;overflow-y:auto;padding:18px}
+h2{font-size:25px;font-weight:800}.mu{color:var(--mu);font-size:13px}main>p.mu{margin:4px 0 14px}
+nav{display:flex;border-top:1px solid var(--br);background:var(--cd);padding-bottom:env(safe-area-inset-bottom)}
+nav button{flex:1;border:0;background:0;color:var(--mu);padding:10px 0 8px;font-size:11px;cursor:pointer;position:relative}
+nav button b{display:block;font-size:19px;font-weight:400}nav button.on{color:var(--pr);font-weight:700}
+#nb{right:14%;top:4px}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0}.chips.sc{flex-wrap:nowrap;overflow-x:auto}
+.chip{background:var(--sf);padding:7px 11px;border-radius:18px;font-size:12px;cursor:pointer;white-space:nowrap;border:1px solid transparent;transition:.15s}
+.chip.on,.chip.sh{background:var(--pr);color:#fff}.chip.sh::before{content:"✓ "}
+.deck{position:relative;height:520px;margin-top:4px}
+.card{position:absolute;inset:0 0 auto;height:500px;background:var(--cd);border-radius:24px;overflow:hidden;box-shadow:0 12px 32px rgba(0,0,0,.14);touch-action:pan-y;user-select:none;transition:transform .3s,opacity .3s}
+.card:not(.top){transform:scale(.94) translateY(14px);opacity:.7}.card.top{cursor:grab;z-index:2}
+.img{height:230px;display:flex;align-items:center;justify-content:center;font-size:84px;position:relative}
+.st{position:absolute;top:18px;font-size:22px;padding:4px 10px;border:3px solid;border-radius:8px;opacity:0;transform:rotate(-12deg)}
+.st.l{left:16px;color:#16a34a}.st.n{right:16px;color:var(--pr);transform:rotate(12deg)}
+.inf{padding:16px 18px}.inf h3{font-size:24px}.vf{color:#16a34a;font-size:12px;margin-top:4px}
+.mt{display:inline-block;margin:10px 0 6px;padding:5px 10px;border-radius:8px;background:#ecfdf3;color:#15803d;font-size:12px;font-weight:700}
+.inf p{font-size:14px;line-height:1.45;color:var(--mu)}
+.acts{display:flex;justify-content:center;gap:18px;margin-top:8px}
+.acts button{width:60px;height:60px;border-radius:50%;border:0;background:var(--cd);box-shadow:0 5px 18px rgba(0,0,0,.15);font-size:25px;cursor:pointer;transition:.15s}.acts button:active{transform:scale(.88)}
+.empty{text-align:center;padding:90px 20px;font-size:20px;line-height:2}
+.btn{width:100%;border:0;background:var(--pr);color:#fff;padding:13px;border-radius:12px;font-weight:700;font-size:15px;cursor:pointer;margin-top:10px}.btn.gh{background:var(--sf);color:var(--tx)}.btn:disabled{opacity:.5}
+.in{width:100%;border:1px solid var(--br);background:var(--cd);color:var(--tx);border-radius:12px;padding:13px;font-size:16px;margin:6px 0;outline:0}.in:focus{border-color:var(--pr)}
+.seg{display:flex;background:var(--sf);border-radius:12px;padding:4px;margin:12px 0}.seg b{flex:1;text-align:center;padding:9px;border-radius:9px;font-size:13px;cursor:pointer}.seg b.on{background:var(--cd);color:var(--pr)}
+.row{background:var(--cd);border-radius:16px;padding:13px;margin-bottom:10px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:.15s}.row:active{transform:scale(.98)}
+.av{width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;flex:none}
+.row .f{flex:1;min-width:0}.row .f b{display:flex;justify-content:space-between}.row .f div{font-size:12px;color:var(--mu);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pc{color:#16a34a;font-weight:700;font-size:12px}.sm{border:0;background:var(--pr);color:#fff;border-radius:10px;padding:8px 13px;font-weight:700;cursor:pointer}.sm.j{background:var(--sf);color:var(--tx)}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--pr);flex:none}
+.pf{text-align:center}.pf .big{width:100px;height:100px;border-radius:50%;background:var(--pr);color:#fff;font-size:44px;display:flex;align-items:center;justify-content:center;margin:6px auto 12px}
+.box{background:var(--cd);border-radius:16px;padding:16px;margin-top:14px;text-align:left}.box h4{margin-bottom:8px}
+.stats{display:flex;gap:10px;margin-top:16px}.stats div{flex:1;background:var(--cd);border-radius:14px;padding:12px}.stats b{display:block;font-size:22px;color:var(--pr)}.stats span{font-size:11px;color:var(--mu)}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;z-index:300;overflow:hidden}.ov.bt{align-items:flex-end}
+.pp,.sh{background:var(--cd);border-radius:24px;padding:28px 22px;width:88%;max-width:380px;text-align:center;animation:up .3s;position:relative;z-index:2}
+.sh{width:100%;max-width:500px;border-radius:24px 24px 0 0;text-align:left;max-height:88dvh;overflow:auto}.sh .img{margin:-28px -22px 12px;height:150px;font-size:64px}
+.pp h1{color:var(--pr);margin:8px 0}.pp p{color:var(--mu);margin-bottom:10px}.big{font-size:56px}
+@keyframes up{from{transform:translateY(40px) scale(.9);opacity:0}}
+.cf{position:absolute;top:-20px;width:9px;height:14px;animation:fall 2.2s linear forwards}@keyframes fall{to{transform:translateY(105vh) rotate(720deg)}}
+.ch{position:fixed;inset:0;max-width:500px;margin:auto;background:var(--bg);z-index:200;display:none;flex-direction:column}.ch.on{display:flex}
+.chh{display:flex;align-items:center;gap:10px;padding:calc(10px + env(safe-area-inset-top)) 14px 10px;border-bottom:1px solid var(--br);background:var(--cd)}.chh button{border:0;background:0;font-size:30px;color:var(--pr);cursor:pointer}
+.msgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:8px}
+.m{max-width:78%;padding:10px 14px;border-radius:18px;font-size:14px;line-height:1.4;animation:up .2s}.m.me{align-self:flex-end;background:var(--pr);color:#fff;border-bottom-right-radius:4px}.m.th{align-self:flex-start;background:var(--cd);border-bottom-left-radius:4px}
+#ic{padding:0 14px}.sb{display:flex;gap:8px;padding:10px 14px calc(10px + env(safe-area-inset-bottom));background:var(--cd)}.sb .in{margin:0}.sb .btn{margin:0}
+.ob{position:fixed;inset:0;background:var(--bg);z-index:400;display:none;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:28px;gap:6px;max-width:500px;margin:auto;overflow:auto}
+.ob h1{font-size:40px;color:var(--pr)}.ob .chips{justify-content:center}
+.toast{position:fixed;left:50%;bottom:90px;transform:translate(-50%,30px);background:#2a1a14;color:#fff;padding:11px 18px;border-radius:24px;font-size:13px;opacity:0;transition:.3s;z-index:500;pointer-events:none;max-width:90%;text-align:center}.toast.on{opacity:1;transform:translate(-50%,0)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}.pc2{background:var(--cd);border-radius:18px;padding:12px;display:flex;flex-direction:column;gap:4px;border:1px solid var(--br)}.pc2 .pi{height:84px;border-radius:12px;background:var(--sf);display:flex;align-items:center;justify-content:center;font-size:42px}.pc2 b{font-size:14px}.pc2 .mu{font-size:11px}.pc2 .sm{margin-top:6px}
+.lv{background:#16a34a;color:#fff;border-radius:6px;font-size:10px;padding:2px 6px;margin-left:6px;vertical-align:middle}
+.am{display:flex;flex-direction:column;gap:8px;min-height:260px;margin:12px 0}.am .m{max-width:90%;white-space:pre-wrap}.am small{display:block;opacity:.6;font-size:10px;margin-top:4px}
+.ab{position:sticky;bottom:-18px;background:var(--bg);padding:8px 0;display:flex;gap:8px}.ab .in{margin:0}.ab .btn{width:auto;margin:0;padding:0 18px}
+.hint{font-size:11px;color:var(--mu);margin:6px 0}.cfg .in{font-size:13px;padding:10px}
+</style></head><body>
+<div class="app">
+<header><div class="logo"><img src="icons/logo.png" alt="">Peerly</div><div class="bell" onclick="bell()">🔔<i id="bd"></i></div></header>
+<main id="v"></main>
+<nav>
+<button class="on" data-t="d" onclick="go('d')"><b>🔥</b>Discover</button>
+<button data-t="e" onclick="go('e')"><b>🔎</b>Explore</button>
+<button data-t="m" onclick="go('m')"><b>🛍</b>Market</button>
+<button data-t="c" onclick="go('c')"><b>💬</b>Chats<i id="nb"></i></button>
+<button data-t="a" onclick="go('a')"><b>✦</b>AI</button>
+<button data-t="p" onclick="go('p')"><b>👤</b>Profile</button>
+</nav></div>
+<div id="ch" class="ch"></div><div id="ob" class="ob"></div><div id="t" class="toast"></div>
+<script>
+const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const ALL=["Basketball","Python","Gaming","Hackathons","Guitar","Music","AI","Robotics","Badminton","Research","Photography","Design","Startups","Cricket","Anime","Fitness"];
+const CAT={Sports:["Basketball","Badminton","Cricket","Fitness"],Coding:["Python","Hackathons","AI","Robotics","Startups"],Music:["Guitar","Music"],Gaming:["Gaming","Anime"],Creative:["Photography","Design"]};
+const P=[
+{id:1,n:"Arjun",a:19,c:"B.Tech • Computer Science",e:"🏀",b:"Looking for people to play basketball after classes. Also into coding and hackathons.",i:["Basketball","Python","Gaming","Hackathons"],l:1},
+{id:2,n:"Meera",a:18,c:"B.Tech • AI & Data Science",e:"🎸",b:"Guitarist looking for musicians to start a small campus jam group.",i:["Guitar","Music","AI","Photography"],l:1},
+{id:3,n:"Rahul",a:20,c:"B.Tech • Electronics",e:"🤖",b:"Building projects and looking for people interested in AI and robotics.",i:["AI","Python","Robotics","Hackathons"],l:0},
+{id:4,n:"Sneha",a:19,c:"B.Tech • Biomedical",e:"🏸",b:"Badminton partners wanted! Also curious about medical tech research.",i:["Badminton","Research","Fitness"],l:1},
+{id:5,n:"Kabir",a:21,c:"BBA • Entrepreneurship",e:"🚀",b:"Building a startup and looking for a technical co-founder.",i:["Startups","Design","Hackathons","Cricket"],l:0},
+{id:6,n:"Ananya",a:20,c:"B.Des • Design",e:"🎨",b:"Designer who loves shooting campus photos. Let's collab on projects!",i:["Design","Photography","Music","Anime"],l:1},
+{id:7,n:"Vikram",a:19,c:"B.Tech • Mechanical",e:"🏏",b:"Cricket every weekend. Need two more players for the inter-college team.",i:["Cricket","Fitness","Gaming"],l:0},
+{id:8,n:"Isha",a:18,c:"B.Sc • Physics",e:"🔬",b:"Into research, anime nights and late-night coding sessions.",i:["Research","Anime","Python","AI"],l:1}];
+const G=[
+{id:1,t:"Evening Hoops 🏀",w:"Today 6 PM • Main Court",m:12,x:"Basketball"},
+{id:2,t:"Hack Night 💻",w:"Fri 8 PM • Lab 3",m:24,x:"Hackathons"},
+{id:3,t:"Campus Jam Session 🎸",w:"Sat 5 PM • Auditorium",m:7,x:"Music"},
+{id:4,t:"AI/ML Study Circle 🤖",w:"Sun 4 PM • Library",m:15,x:"AI"},
+{id:5,t:"Badminton Doubles 🏸",w:"Tue 7 AM • Sports Hall",m:8,x:"Badminton"},
+{id:6,t:"Sunrise Photo Walk 📸",w:"Sun 6 AM • Gate 2",m:9,x:"Photography"}];
+const RP=["Haha yes! I'm in 🙌","That sounds awesome, count me in!","Totally! When are you free? 👀","Love that idea 😄","Let's do it — evenings work for me!"];
+let S={ru:{},rmap:{},rn:1000,me:null,liked:[],passed:[],matches:[],chats:{},groups:[],dark:0,unread:{}};
+try{S=Object.assign(S,JSON.parse(localStorage.getItem('peerly')||'{}'))}catch(e){}
+const save=()=>{try{localStorage.setItem('peerly',JSON.stringify(S))}catch(e){}};
+let AIR=null,T='d',F='All',Q='',C='All',X='p',OS=0,D={};
+const gr=p=>`linear-gradient(135deg,hsl(${p.id*47},80%,88%),hsl(${p.id*47+30},80%,78%))`;
+const shared=p=>p.i.filter(x=>S.me.interests.includes(x));
+const pct=p=>{const s=shared(p).length;return Math.min(99,s?55+s*15:35+(p.id*7)%15)};
+const CFG=(()=>{try{return JSON.parse(localStorage.getItem('pcfg')||'{}')}catch{return{}}})();
+const uid=()=>(crypto.randomUUID?crypto.randomUUID():Date.now()+''+Math.random()).slice(0,18);
+const cl=(t,n)=>esc(String(t||'').slice(0,n));
+function rid(u){if(!S.rmap[u.uid])S.rmap[u.uid]=++S.rn;return S.rmap[u.uid]}
+function upUser(u,live){const id=rid(u);const o=S.ru[id]||{};S.ru[id]={id,uid:u.uid,n:cl(u.name||o.n,30)||'Student',a:'',c:cl(u.course,40)||o.c||'Student',e:'🟢',b:cl(u.bio,160)||o.b||'',i:(u.interests||o.i||[]).slice(0,8).map(x=>cl(x,20)),l:1,live:live?1:0};return id}
+const people=()=>[...Object.values(S.ru).sort((a,b)=>b.live-a.live),...P];
+const P_=id=>people().find(x=>x.id==id);
+const nm=p=>p.n+(p.a?', '+p.a:'')+(p.live?'<span class="lv">LIVE</span>':'');
+function toast(m){const t=$('#t');t.textContent=m;t.classList.add('on');clearTimeout(toast.k);toast.k=setTimeout(()=>t.classList.remove('on'),2600)}
+function badge(){const n=Object.values(S.unread).reduce((a,b)=>a+b,0);for(const e of['#nb','#bd']){$(e).style.display=n?'block':'none';$(e).textContent=n}}
+function bell(){const n=Object.values(S.unread).reduce((a,b)=>a+b,0);toast(n?`You have ${n} unread message${n>1?'s':''} 💬`:'No new notifications');if(n)go('c')}
+function go(t){T=t;document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.t==t));render();$('#v').scrollTop=0}
+function render(){document.documentElement.classList.toggle('d',!!S.dark);if(!S.me)return onboard();$('#ob').style.display='none';V[T]();badge()}
+const V={};
+/* ---------- DISCOVER ---------- */
+function dq(){return people().filter(p=>!S.liked.includes(p.id)&&!S.passed.includes(p.id)&&(F=='All'||p.i.includes(F))).sort((a,b)=>pct(b)-pct(a))}
+function card(p,top){return `<div class="card ${top?'top':''}" data-id="${p.id}"><div class="img" style="background:${gr(p)}">${p.e}<b class="st l">CONNECT</b><b class="st n">PASS</b></div><div class="inf"><h3>${nm(p)}</h3><div class="mu">${p.c}</div><div class="vf">✓ Campus Verified</div><span class="mt">${pct(p)}% MATCH</span><p>${p.b}</p><div class="chips">${p.i.map(x=>`<span class="chip ${S.me.interests.includes(x)?'sh':''}">${x}</span>`).join('')}</div></div></div>`}
+V.d=()=>{const q=dq();$('#v').innerHTML=`<h2>Find your people</h2><p class="mu">Drag the card or tap a button. Green ticks = shared interests.</p><div class="chips sc">${['All',...S.me.interests].map(x=>`<span class="chip ${x==F?'on':''}" onclick="F='${x}';render()">${x}</span>`).join('')}</div><div class="deck">${q.length?q.slice(0,2).reverse().map((p,i,a)=>card(p,i==a.length-1)).join(''):`<div class="empty">🎉<br>You're all caught up!<br><button class="btn" onclick="S.passed=[];F='All';save();render()">Review passed profiles</button></div>`}</div><div class="acts"><button onclick="swipe(0)">✕</button><button onclick="swipe(2)">⭐</button><button onclick="swipe(1)" style="color:#ec4899">♥</button></div>`;drag()};
+function drag(sw=swipe){const c=$('.card.top');if(!c)return;let x0=null,dx=0;const l=c.querySelector('.st.l'),n=c.querySelector('.st.n');
+c.onpointerdown=e=>{x0=e.clientX;c.setPointerCapture(e.pointerId);c.style.transition='none'};
+c.onpointermove=e=>{if(x0===null)return;dx=e.clientX-x0;c.style.transform=`translateX(${dx}px) rotate(${dx/18}deg)`;l.style.opacity=dx/100;n.style.opacity=-dx/100};
+c.onpointerup=()=>{if(x0===null)return;x0=null;c.style.transition='';if(dx>100)sw(1);else if(dx<-100)sw(0);else{c.style.transform='';l.style.opacity=n.style.opacity=0}dx=0}}
+function swipe(k){const c=$('.card.top');if(!c)return;const id=+c.dataset.id,r=k?1:-1;c.style.transition='transform .4s,opacity .4s';c.style.transform=`translateX(${r*600}px) rotate(${r*30}deg)`;c.style.opacity=0;
+setTimeout(()=>{if(k)connect(id,k==2);else S.passed.push(id);save();render()},350)}
+function connect(id,f){const p=P_(id);if(!S.liked.includes(id))S.liked.push(id);S.passed=S.passed.filter(x=>x!=id);
+if(p.l||f)makeMatch(p);else{toast(`Request sent to ${p.n} 👋`);if(p.id%2)setTimeout(()=>{makeMatch(p);toast(`${p.n} accepted your request!`)},7000)}save()}
+function makeMatch(p){if(S.matches.includes(p.id))return;S.matches.push(p.id);if(!p.uid){const s=shared(p)[0];S.chats[p.id]=[{f:1,t:`Hey ${S.me.name}! ${s?'Saw we both like '+s:'Great to match'} 😄`}];S.unread[p.id]=1}save();badge();pop(p);if(T=='c'||T=='p')render()}
+function pop(p){const n=shared(p).length,o=document.createElement('div');o.className='ov';o.innerHTML=`<div class="pp"><div class="big">🎉</div><h1>It's a Match!</h1><p>You and <b>${p.n}</b> share ${n||'new'} interest${n==1?'':'s'}. Say hi!</p><button class="btn" onclick="this.closest('.ov').remove();openChat(${p.id})">💬 Send a message</button><button class="btn gh" onclick="this.closest('.ov').remove()">Keep discovering</button></div>`;document.body.appendChild(o);
+for(let i=0;i<40;i++){const c=document.createElement('i');c.className='cf';c.style.cssText=`left:${Math.random()*100}%;background:hsl(${Math.random()*360},85%,60%);animation-delay:${Math.random()*.6}s`;o.appendChild(c)}}
+/* ---------- EXPLORE ---------- */
+V.e=()=>{$('#v').innerHTML=`<h2>Explore</h2><div class="seg"><b class="${X=='p'?'on':''}" onclick="X='p';render()">People</b><b class="${X=='g'?'on':''}" onclick="X='g';render()">Groups & Events</b></div>`+(X=='p'?`<div style="display:flex;gap:8px"><input class="in" style="margin:0" placeholder="Search, or describe who you need..." value="${esc(Q)}" oninput="Q=this.value;AIR=null;rl()"><button class="sm" onclick="pAI()">✦</button></div><div class="hint" id="ah"></div><div class="chips sc">${['All',...Object.keys(CAT)].map(x=>`<span class="chip ${x==C?'on':''}" onclick="C='${x}';render()">${x}</span>`).join('')}</div><div id="rl"></div>`:'<div id="rl"></div>');rl()};
+function rl(){let h='';if(X=='p'){const q=Q.toLowerCase();const r=people().filter(p=>(AIR||(p.n+p.c+p.i.join(' ')).toLowerCase().includes(q))&&(C=='All'||p.i.some(x=>CAT[C].includes(x)))).sort((a,b)=>AIR?AIR.indexOf(a.id)-AIR.indexOf(b.id):pct(b)-pct(a));
+h=r.map(p=>`<div class="row" onclick="sheet(${p.id})"><div class="av" style="background:${gr(p)}">${p.e}</div><div class="f"><b>${p.n} ${p.l?'':''}<span class="pc">${pct(p)}%</span></b><div>${p.i.join(' • ')}</div></div></div>`).join('')||'<div class="empty" style="padding:40px">No one found 🤔<br><span class="mu">Try another keyword</span></div>'}
+else h=G.map(g=>{const j=S.groups.includes(g.id);return `<div class="row" style="cursor:default"><div class="f"><b>${g.t}</b><div>${g.w}</div><div>👥 ${g.m+(j?1:0)} going${S.me.interests.includes(g.x)?' • ✨ matches your interests':''}</div></div><button class="sm ${j?'j':''}" onclick="joinG(${g.id})">${j?'Joined ✓':'Join'}</button></div>`}).join('');$('#rl').innerHTML=h}
+function joinG(id){const i=S.groups.indexOf(id);i<0?(S.groups.push(id),toast('You joined! See you there 🎉')):S.groups.splice(i,1);save();rl()}
+function sheet(id){const p=P_(id),m=S.matches.includes(id),l=S.liked.includes(id),o=document.createElement('div');o.className='ov bt';o.onclick=e=>{if(e.target==o)o.remove()};
+o.innerHTML=`<div class="sh"><div class="img" style="background:${gr(p)}">${p.e}</div><h3 style="font-size:22px">${nm(p)}</h3><div class="mu">${p.c}</div><span class="mt">${pct(p)}% MATCH</span><p class="mu" style="font-size:14px;line-height:1.5">${p.b}</p><div class="chips">${p.i.map(x=>`<span class="chip ${S.me.interests.includes(x)?'sh':''}">${x}</span>`).join('')}</div>${m?`<button class="btn" onclick="this.closest('.ov').remove();openChat(${id})">💬 Message</button>`:`<button class="btn" ${l?'disabled':''} onclick="this.closest('.ov').remove();connect(${id})">${l?'Request sent ✓':'Connect'}</button>`}</div>`;document.body.appendChild(o)}
+/* ---------- REALTIME LAYER ---------- */
+const RT={mode:'local',live:{},on:{row(){},users(){}},
+async init(me){this.me=me;
+ if(CFG.sbUrl&&CFG.sbKey){try{
+  await new Promise((r,j)=>{const x=document.createElement('script');x.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js';x.onload=r;x.onerror=j;document.head.appendChild(x)});
+  const sb=this.sb=supabase.createClient(CFG.sbUrl,CFG.sbKey);
+  let ch=sb.channel('db');for(const t of['messages','listings'])ch=ch.on('postgres_changes',{event:'INSERT',schema:'public',table:t},e=>this.on.row(t,e.new));ch.subscribe();
+  const pr=sb.channel('presence',{config:{presence:{key:me.uid}}});
+  pr.on('presence',{event:'sync'},()=>{this.live={};const st=pr.presenceState();for(const k in st)if(k!=me.uid)this.live[k]=st[k][0];this.on.users()}).subscribe(x=>{if(x=='SUBSCRIBED')pr.track(me)});
+  this.mode='supabase';return}catch(e){console.warn('Supabase unavailable, using local mode',e)}}
+ const bc=this.bc=new BroadcastChannel('peerly');
+ bc.onmessage=e=>{const d=e.data;if(d.t=='row')this.on.row(d.tb,d.r);if(d.t=='hi'&&d.u.uid!=me.uid){const n=!this.live[d.u.uid];this.live[d.u.uid]={...d.u,seen:Date.now()};if(n)this.on.users()}};
+ const hi=()=>{bc.postMessage({t:'hi',u:me});let c=0;for(const k in this.live)if(Date.now()-this.live[k].seen>15000){delete this.live[k];c=1}if(c)this.on.users()};hi();setInterval(hi,5000)},
+async all(tb,room){if(this.sb){let q=this.sb.from(tb).select('*').order('created_at').limit(200);if(room)q=q.eq('room',room);const{data}=await q;return data||[]}
+ return JSON.parse(localStorage.getItem('pl_'+tb)||'[]').filter(x=>!room||x.room==room)},
+async put(tb,r){r.k=r.k||Math.random().toString(36).slice(2);r.created_at=r.created_at||new Date().toISOString();
+ if(this.sb){const{error}=await this.sb.from(tb).insert(r);if(error)toast('Could not send: '+error.message);return}
+ const a=JSON.parse(localStorage.getItem('pl_'+tb)||'[]');a.push(r);try{localStorage.setItem('pl_'+tb,JSON.stringify(a.slice(-300)))}catch(e){}
+ this.bc.postMessage({t:'row',tb,r});this.on.row(tb,r)}};
+const M={},dm=(a,b)=>[a,b].sort().join('|');
+function addM(r){const a=M[r.room]=M[r.room]||[];if(a.some(x=>x.k==r.k))return 0;a.push(r);return 1}
+function onRow(tb,r){
+ if(tb=='listings'){if(LST.some(x=>x.k==r.k))return;LST.push({k:r.k,kind:r.kind,name:cl(r.name,60),price:cl(r.price,30),cat:cl(r.cat,20),desc:cl(r.descr,160),emoji:r.kind=='skill'?'✦':'📦',meta:cl(r.meta,50),owner:r.owner});if(T=='m')ml();return}
+ if(tb!='messages'||(r.room!='lobby'&&!r.room.split('|').includes(S.me.uid)))return;
+ if(!addM(r))return;const o=$('#ch');
+ if(o.classList.contains('on')&&o.dataset.room==r.room){msgs();return}
+ if(r.uid==S.me.uid)return;let id=0;
+ if(r.room!='lobby'){id=upUser({uid:r.uid,name:r.name});if(!S.matches.includes(id))S.matches.push(id);toast('💬 New message from '+cl(r.name,20))}
+ S.unread[id]=(S.unread[id]||0)+1;save();badge();if(T=='c')render()}
+function onUsers(){let n=0;for(const k in RT.live){if(!S.ru[S.rmap[k]]||!S.ru[S.rmap[k]].live)n++;upUser(RT.live[k],1)}
+ for(const id in S.ru)if(!RT.live[S.ru[id].uid])S.ru[id].live=0;save();if(n)toast('🟢 '+n+' student'+(n>1?'s':'')+' online now');if(T=='c'||T=='e'||(T=='d'&&!dq().length))render()}
+async function boot(){if(!S.me||RT.started)return;RT.started=1;if(!S.me.uid){S.me.uid=uid();save()}
+ RT.on.row=onRow;RT.on.users=onUsers;
+ await RT.init({uid:S.me.uid,name:S.me.name,course:S.me.course||'',bio:S.me.bio||'',interests:S.me.interests});
+ (await RT.all('listings')).forEach(r=>onRow('listings',r));
+ toast(RT.mode=='supabase'?'🟢 Connected to realtime database':'🟡 Local realtime mode: open Peerly in 2 tabs to test')}
+/* ---------- CHATS ---------- */
+const lastOf=id=>{const p=P_(id);if(!p)return'';if(p.uid){const a=M[dm(S.me.uid,p.uid)]||[],l=a[a.length-1];return l?(l.uid==S.me.uid?'You: ':'')+esc(l.text):'Say hi!'}const c=S.chats[id]||[],l=c[c.length-1];return l?(l.f?'':'You: ')+esc(l.t):'Say hi!'};
+V.c=()=>{const on=Object.keys(RT.live).length;$('#v').innerHTML=`<h2>Messages</h2><p class="mu"><span style="color:#16a34a">●</span> ${RT.mode=='supabase'?'Realtime database connected':'Local realtime mode'} • ${on} other student${on==1?'':'s'} online</p><div class="row" onclick="openChat(0)"><div class="av" style="background:var(--sf)">🌐</div><div class="f"><b>Campus Lobby</b><div>Live group chat for everyone on Peerly</div></div>${S.unread[0]?'<span class="dot"></span>':''}</div>`+S.matches.map(id=>{const p=P_(id);return p?`<div class="row" onclick="openChat(${id})"><div class="av" style="background:${gr(p)}">${p.e}</div><div class="f"><b>${p.n}${p.live?'<span class="lv">LIVE</span>':''}</b><div>${lastOf(id)}</div></div>${S.unread[id]?'<span class="dot"></span>':''}</div>`:''}).join('')};
+const ice=p=>[`Hey ${p.n}! I saw you're into ${p.i[0]||'the same things'} 👋`,'Free this weekend?','Want to join a group event together?'];
+async function openChat(id){const o=$('#ch'),p=id==0?{n:'Campus Lobby',e:'🌐',i:[],id:0}:P_(id);S.unread[id]=0;save();badge();
+ const room=id==0?'lobby':(p.uid?dm(S.me.uid,p.uid):'');o.className='ch on';o.dataset.id=id;o.dataset.room=room;
+ const sub=id==0?`${Object.keys(RT.live).length+1} online • ${RT.mode=='supabase'?'realtime database':'local realtime'}`:p.uid?(p.live?'🟢 online now':'offline'):`${pct(p)}% match • online`;
+ o.innerHTML=`<div class="chh"><button onclick="closeChat()">‹</button><span class="av" style="background:${id==0?'var(--sf)':gr(p)};width:40px;height:40px;font-size:20px">${p.e}</span><div><b>${p.n}</b><div class="mu" style="font-size:11px">${sub}</div></div></div><div class="msgs" id="ms"></div>${id==0?'':`<div class="chips sc" id="ic">${ice(p).map(x=>`<span class="chip" onclick="send(this.textContent)">${esc(x)}</span>`).join('')}<span class="chip on" onclick="aiIdea(${id})">✦ AI idea</span></div>`}<div class="sb"><input class="in" id="mi" placeholder="Message ${p.n}..." onkeydown="if(event.key=='Enter')send()"><button class="btn" style="width:auto;padding:0 18px" onclick="send()">➤</button></div>`;
+ if(room&&!M[room]){M[room]=[];(await RT.all('messages',room)).forEach(addM)}msgs()}
+function msgs(){const o=$('#ch'),id=o.dataset.id,room=o.dataset.room,m=$('#ms');if(!m)return;const a=room?(M[room]||[]):(S.chats[id]||[]);
+ m.innerHTML=a.map(x=>{const me=room?x.uid==S.me.uid:!x.f;return `<div class="m ${me?'me':'th'}">${room=='lobby'&&!me?`<small style="opacity:.6;font-size:10px;display:block">${esc(x.name||'')}</small>`:''}${esc(x.text||x.t)}</div>`}).join('');m.scrollTop=m.scrollHeight}
+function closeChat(){$('#ch').className='ch';render()}
+function send(txt){const o=$('#ch'),id=o.dataset.id,room=o.dataset.room,t=(txt||$('#mi').value).trim();if(!t)return;$('#mi').value='';const ic=$('#ic');if(ic)ic.style.display='none';
+ if(room)return RT.put('messages',{room,uid:S.me.uid,name:S.me.name,text:t.slice(0,500)});
+ const p=P_(id);(S.chats[id]=S.chats[id]||[]).push({f:0,t});save();msgs();const ms=$('#ms');ms.insertAdjacentHTML('beforeend','<div class="m th">typing…</div>');ms.scrollTop=ms.scrollHeight;
+ setTimeout(()=>{const s=shared(p)[0],r=s&&Math.random()<.5?`Honestly ${s} is my thing too 🔥 What are you up to this week?`:RP[Math.random()*RP.length|0];S.chats[id].push({f:1,t:r});
+ if($('#ch').classList.contains('on')&&$('#ch').dataset.id==id)msgs();else{S.unread[id]=(S.unread[id]||0)+1;badge()}save()},1300+Math.random()*900)}
+async function aiIdea(id){const p=P_(id),sh=shared(p).join(', ')||p.i.slice(0,2).join(', ');$('#mi').value='✦ thinking…';
+ let t;try{t=await llm(`Write ONE friendly, casual first message (max 20 words, 1 emoji) from ${S.me.name} to ${p.n}. Shared interests: ${sh}.`,'You write short, natural icebreakers for students. Output only the message.')}catch{t=`Hey ${p.n}! Noticed we're both into ${sh||'cool stuff'}. Want to hang out or team up? 😄`}
+ $('#mi').value=t.replace(/^"|"$/g,'')}
+/* ---------- PROFILE ---------- */
+const picker=sel=>`<div class="chips pk">${ALL.map(x=>`<span class="chip ${sel.includes(x)?'on':''}" data-x="${x}" onclick="this.classList.toggle('on')">${x}</span>`).join('')}</div>`;
+const picked=()=>[...document.querySelectorAll('.pk .on')].map(e=>e.dataset.x);
+V.p=()=>{const m=S.me;$('#v').innerHTML=`<div class="pf"><div class="big">${esc(m.name[0]||'?').toUpperCase()}</div><h2>${esc(m.name)}</h2><div class="mu">${m.v?'<span style="color:#16a34a">✓ Campus Verified</span>':'Email not a campus domain'} • ${esc(m.course||'Student')}</div><button class="btn" style="width:auto;padding:10px 22px" onclick="edit()">Edit Profile</button>
+<div class="stats"><div><b>${S.matches.length}</b><span>Matches</span></div><div><b>${S.liked.length}</b><span>Connections</span></div><div><b>${S.groups.length}</b><span>Groups</span></div></div>
+<div class="box"><h4>About me</h4><div class="mu" style="font-size:14px;line-height:1.5">${esc(m.bio)}</div></div>
+<div class="box"><h4>My interests</h4><div class="chips">${m.interests.map(x=>`<span class="chip">${x}</span>`).join('')}</div></div>
+<div class="box cfg"><h4>Backend & AI</h4><div class="hint">Realtime DB: Supabase (open-source Postgres). Leave empty for local mode.</div><input class="in" id="c1" placeholder="Supabase project URL" value="${esc(CFG.sbUrl||'')}"><input class="in" id="c2" placeholder="Supabase anon key" value="${esc(CFG.sbKey||'')}"><div class="hint">Open-source AI: Ollama endpoint, chat model, embedding model.</div><input class="in" id="c3" placeholder="http://localhost:11434" value="${esc(CFG.ollama||'')}"><input class="in" id="c4" placeholder="qwen3:4b" value="${esc(CFG.model||'')}"><input class="in" id="c5" placeholder="qwen3-embedding:0.6b" value="${esc(CFG.emb||'')}"><button class="btn" onclick="saveCfg()">Save & reconnect</button></div><div class="box"><h4>Settings</h4><button class="btn gh" onclick="S.dark^=1;save();render()">${S.dark?'☀️ Light mode':'🌙 Dark mode'}</button>${window.dp?'<button class="btn gh" onclick="inst()">📲 Install Peerly</button>':''}<button class="btn gh" onclick="if(confirm('Reset all data?')){localStorage.removeItem('peerly');location.reload()}">Reset demo</button></div></div>`};
+function saveCfg(){const g=i=>$('#c'+i).value.trim();try{localStorage.setItem('pcfg',JSON.stringify({sbUrl:g(1),sbKey:g(2),ollama:g(3),model:g(4),emb:g(5)}))}catch(e){}location.reload()}
+function edit(){const m=S.me,o=document.createElement('div');o.className='ov bt';o.onclick=e=>{if(e.target==o)o.remove()};
+o.innerHTML=`<div class="sh"><h3>Edit Profile</h3><input class="in" id="eN" value="${esc(m.name)}" placeholder="Name"><input class="in" id="eC" value="${esc(m.course||'')}" placeholder="Course & year"><textarea class="in" id="eB" rows="3" placeholder="Bio">${esc(m.bio)}</textarea>${picker(m.interests)}<button class="btn" onclick="saveP(this)">Save</button></div>`;document.body.appendChild(o)}
+function saveP(b){const i=picked();if(i.length<3)return toast('Pick at least 3 interests');Object.assign(S.me,{name:$('#eN').value.trim()||S.me.name,course:$('#eC').value.trim(),bio:$('#eB').value.trim(),interests:i});save();F='All';b.closest('.ov').remove();render();toast('Profile updated ✨')}
+/* ---------- OPEN-SOURCE AI: Ollama (Qwen3) + in-browser MiniLM embeddings ---------- */
+const AIC=()=>({u:(CFG.ollama||'http://localhost:11434').replace(/\/$/,''),m:CFG.model||'qwen3:4b',e:CFG.emb||'qwen3-embedding:0.6b'});
+async function llm(prompt,system){const a=AIC(),r=await fetch(a.u+'/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:a.m,stream:false,think:false,messages:[{role:'system',content:system},{role:'user',content:prompt}]}),signal:AbortSignal.timeout(45000)});
+ if(!r.ok)throw 0;return((await r.json()).message?.content||'').replace(/<think>[\s\S]*?<\/think>/g,'').trim()}
+let SRC=null,TJ=null;const EC={};
+async function src(){if(SRC)return SRC;try{const a=AIC(),r=await fetch(a.u+'/api/embed',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:a.e,input:'hi'}),signal:AbortSignal.timeout(2500)});if(r.ok)return SRC='ollama'}catch{}return SRC='browser'}
+async function emb(t){const s=await src(),k=s+t;if(EC[k])return EC[k];let v;
+ if(s=='ollama'){const a=AIC(),r=await fetch(a.u+'/api/embed',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:a.e,input:t})});v=(await r.json()).embeddings[0]}
+ else{TJ=TJ||import('https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2').then(m=>m.pipeline('feature-extraction','Xenova/all-MiniLM-L6-v2'));v=Array.from((await(await TJ)(t,{pooling:'mean',normalize:true})).data)}
+ return EC[k]=v}
+const cos=(a,b)=>{let d=0,x=0,y=0;for(let i=0;i<a.length;i++){d+=a[i]*b[i];x+=a[i]*a[i];y+=b[i]*b[i]}return d/(Math.sqrt(x*y)||1)};
+async function semRank(q,arr,txt){try{const qv=await emb(q),o=[];for(const x of arr)o.push({...x,score:Math.round(Math.max(0,cos(qv,await emb(txt(x))))*100)});return o.sort((a,b)=>b.score-a.score)}
+ catch{SRC='keyword';const w=q.toLowerCase().split(/\W+/).filter(Boolean);return arr.map(x=>({...x,score:w.filter(t=>txt(x).toLowerCase().includes(t)).length})).sort((a,b)=>b.score-a.score)}}
+async function pAI(){if(!Q.trim())return toast('Describe who you are looking for first');$('#ah').textContent='✦ Ranking by meaning…';
+ const r=await semRank(Q,people(),p=>`${p.n}. ${p.c}. ${p.b}. ${p.i.join(', ')}`);AIR=r.map(x=>x.id);rl();$('#ah').textContent=`✦ Ranked by semantic similarity (${SRC=='ollama'?'Ollama embeddings':SRC=='browser'?'in-browser MiniLM':'keyword fallback'})`}
+/* ---------- MARKETPLACE + SKILLS ---------- */
+const MARKET=[
+{id:"m1",name:"MacBook Air M2",price:"₹52,000",cat:"electronics",emoji:"💻",meta:"CSE · 2nd year",desc:"Excellent condition, lightly used.",kw:"laptop macbook apple coding"},
+{id:"m2",name:"Calculus: Thomas",price:"₹450",cat:"books",emoji:"📚",meta:"ECE · 1st year",desc:"Clean pages, no markings.",kw:"math textbook calculus engineering"},
+{id:"m3",name:"DSLR Camera",price:"₹900/day",cat:"rentals",emoji:"📷",meta:"Media Club",desc:"Perfect for events and projects.",kw:"camera photography event rental"},
+{id:"m4",name:"Oversized Hoodie",price:"₹700",cat:"fashion",emoji:"🧥",meta:"Design · 3rd year",desc:"Worn twice, freshly washed.",kw:"hoodie clothes fashion"},
+{id:"m5",name:"Arduino Starter Kit",price:"₹1,200",cat:"electronics",emoji:"🔌",meta:"EEE · 2nd year",desc:"Everything for prototyping.",kw:"arduino electronics robotics embedded"},
+{id:"m6",name:"Formal Blazer",price:"₹400/day",cat:"rentals",emoji:"🧥",meta:"MBA · 1st year",desc:"For presentations and MUNs.",kw:"blazer formal interview rental"}];
+const SKILLS=[
+{id:"s1",name:"Graphic Design",price:"₹300 / project",cat:"design",emoji:"🎨",meta:"Ananya · 4.9 ★",desc:"Posters, logos, social creatives.",kw:"poster logo branding canva"},
+{id:"s2",name:"Python & ML Help",price:"₹250 / hour",cat:"tech",emoji:"🐍",meta:"Rohan · 4.8 ★",desc:"Python, ML basics and debugging.",kw:"python machine learning coding"},
+{id:"s3",name:"Nail Art",price:"₹200 / set",cat:"beauty",emoji:"💅",meta:"Meera · 5.0 ★",desc:"Custom campus-friendly nail art.",kw:"nail art beauty"},
+{id:"s4",name:"Portrait Photography",price:"₹500 / session",cat:"creative",emoji:"📸",meta:"Arjun · 4.9 ★",desc:"Portraits, events, profile photos.",kw:"photos portrait event camera"},
+{id:"s5",name:"Video Editing",price:"₹600 / video",cat:"creative",emoji:"🎬",meta:"Diya · 4.7 ★",desc:"Reels, event edits, short films.",kw:"video editing reels film"},
+{id:"s6",name:"Web Development",price:"₹800 / project",cat:"tech",emoji:"💻",meta:"Vikram · 4.9 ★",desc:"Landing pages and student projects.",kw:"website html css react frontend"}];
+let LST=[],MK='i',MQ='',MC='all',MR=null,MV='s';const MSEEN=new Set();
+const mk=()=>MK=='i'?[...MARKET,...LST.filter(x=>x.kind!='skill')]:[...SKILLS,...LST.filter(x=>x.kind=='skill')];
+const mt=x=>`${x.name}. ${x.desc}. ${x.kw||x.cat}`;
+V.m=()=>{const cats=['all',...new Set(mk().map(x=>x.cat))];$('#v').innerHTML=`<h2>Marketplace</h2><p class="mu">Swipe right on what you want, left to skip. Everything is live for all students.</p><div class="seg"><b class="${MK=='i'?'on':''}" onclick="MK='i';MR=null;MC='all';render()">Items</b><b class="${MK=='s'?'on':''}" onclick="MK='s';MR=null;MC='all';render()">Skills</b></div><div class="seg" style="margin-top:0"><b class="${MV=='s'?'on':''}" onclick="MV='s';render()">🔥 Swipe</b><b class="${MV=='g'?'on':''}" onclick="MV='g';render()">▦ Browse</b></div><div style="display:flex;gap:8px"><input class="in" style="margin:0" id="mq" placeholder="${MK=='i'?'e.g. laptop for coding':'e.g. someone to edit a reel'}" value="${esc(MQ)}" oninput="MQ=this.value;MR=null;ml()"><button class="sm" onclick="mAI()">✦</button></div><div class="hint" id="mh"></div><div class="chips sc">${cats.map(x=>`<span class="chip ${x==MC?'on':''}" onclick="MC='${x}';render()">${x}</span>`).join('')}</div><div id="ml"></div><button class="btn" onclick="listM()">✦ ${MK=='i'?'List an item':'Offer a skill'} with AI</button>`;ml()};
+const mcard=(x,top)=>`<div class="card ${top?'top':''}" data-id="${x.k||x.id}"><div class="img" style="background:linear-gradient(135deg,#F6EAD1,#f9d3d6)">${x.emoji}<b class="st l">INTERESTED</b><b class="st n">SKIP</b></div><div class="inf"><h3>${x.name}</h3><div class="mu">${x.meta}</div><span class="mt" style="background:#fdecee;color:#C1121F">${x.price}${MR&&x.score!=null?' • '+x.score+'% match':''}</span><p>${x.desc}</p><div class="chips"><span class="chip">${x.cat}</span><span class="chip">✓ Campus verified</span></div></div></div>`;
+function mswipe(k){const c=$('.card.top');if(!c)return;const id=c.dataset.id,r=k?1:-1;c.style.transition='transform .4s,opacity .4s';c.style.transform=`translateX(${r*600}px) rotate(${r*30}deg)`;c.style.opacity=0;
+ setTimeout(()=>{MSEEN.add(id);if(k){S.saved=S.saved||[];if(!S.saved.includes(id))S.saved.push(id);save();mAsk(id)}ml()},350)}
+function ml(){const q=MQ.toLowerCase(),a=(MR||mk()).filter(x=>(MC=='all'||x.cat==MC)&&(MR||mt(x).toLowerCase().includes(q)));
+ if(MV=='s'){const d=a.filter(x=>!MSEEN.has(x.k||x.id));$('#ml').innerHTML=d.length?`<div class="deck">${d.slice(0,2).reverse().map((x,i,r)=>mcard(x,i==r.length-1)).join('')}</div><div class="acts"><button onclick="mswipe(0)">✕</button><button onclick="mswipe(1)" style="color:#ec4899">♥</button></div>`:`<div class="empty">🛍<br>You've seen everything!<br><button class="btn" onclick="MSEEN.clear();ml()">Start over</button></div>`;drag(mswipe);return}
+ $('#ml').innerHTML=a.length?`<div class="grid">${a.map(x=>`<div class="pc2"><div class="pi">${x.emoji}</div><b>${x.name}</b><span class="pc">${x.price}${MR&&x.score!=null?' • '+x.score+'%':''}</span><div class="mu">${x.meta}</div><div class="mu">${x.desc}</div><button class="sm" onclick="mAsk('${x.k||x.id}')">${MK=='i'?"I'm interested":'Connect'}</button></div>`).join('')}</div>`:'<div class="empty" style="padding:30px">Nothing yet 🤔</div>'}
+async function mAI(){if(!MQ.trim())return;$('#mh').textContent='✦ Ranking by meaning…';MR=await semRank(MQ,mk(),mt);ml();$('#mh').textContent=`✦ Semantic search via ${SRC=='ollama'?'Ollama embeddings':SRC=='browser'?'in-browser MiniLM (open-source)':'keyword fallback'}`}
+function mAsk(id){const x=[...MARKET,...SKILLS,...LST].find(y=>(y.k||y.id)==id);
+ if(x.owner&&x.owner!=S.me.uid){const pid=upUser({uid:x.owner,name:(x.meta||'').split('•')[0].trim()});if(!S.matches.includes(pid))S.matches.push(pid);save();openChat(pid).then(()=>$('#mi').value=`Hi! I'm interested in "${x.name}" (${x.price})`)}
+ else toast(x.owner?'This is your own listing':`Request sent to ${(x.meta||'').split('·')[0]} ✦`)}
+async function genCard(kind,raw){const sys=kind=='skill'?'Create a campus skill card. Return valid JSON only with exactly: title, category, price, description. If no price given use "Set your price". Description under 25 words.':'Create a marketplace listing. Return valid JSON only with exactly: title, category, price, description. Preserve the price if present. Do not invent facts. Description under 30 words.';
+ try{return JSON.parse((await llm(raw,sys)).replace(/```json|```/g,'').trim())}catch{const pr=(raw.match(/₹\s?[\d,]+/)||[kind=='skill'?'Set your price':'Ask seller'])[0];return{title:raw.split(/\s+/).slice(0,5).join(' ').replace(/^./,c=>c.toUpperCase()),category:'general',price:pr,description:raw.slice(0,120),offline:1}}}
+function listM(){const kind=MK=='s'?'skill':'item',o=document.createElement('div');o.className='ov bt';o.onclick=e=>{if(e.target==o)o.remove()};let g=null;
+ o.innerHTML=`<div class="sh"><h3>${kind=='skill'?'Offer a skill':'List an item'}</h3><p class="mu" style="margin:6px 0">Describe it in your own words. The open-source AI writes the card.</p><textarea class="in" id="lr" rows="3" placeholder="${kind=='skill'?'I make Instagram posters and flyers, ₹300':'Lightly used calculator, ₹600, good for engineering'}"></textarea><button class="btn" id="lg">✦ Generate with AI</button><div id="lp"></div></div>`;document.body.appendChild(o);
+ $('#lg').onclick=async()=>{const raw=$('#lr').value.trim();if(!raw)return;$('#lg').textContent='Writing…';g=await genCard(kind,raw);$('#lg').textContent='✦ Regenerate';
+  $('#lp').innerHTML=`<div class="box"><div class="mu" style="font-size:11px">${g.offline?'OFFLINE DRAFT (connect Ollama for AI writing)':'AI DRAFT'}</div><h3 style="margin:4px 0">${cl(g.title,60)}</h3><div class="mu">${cl(g.category,20)} • ${cl(g.price,30)}</div><p class="mu" style="margin:6px 0">${cl(g.description,160)}</p><button class="btn" id="lpub">Publish to everyone</button></div>`;
+  $('#lpub').onclick=()=>{RT.put('listings',{kind,name:String(g.title).slice(0,60),price:String(g.price).slice(0,30),cat:String(g.category).toLowerCase().slice(0,20),descr:String(g.description).slice(0,160),owner:S.me.uid,meta:`${S.me.name} · ${S.me.course||'Student'}`.slice(0,50)});o.remove();toast('Published! Visible to all students ✨')}}}
+/* ---------- AI ASSISTANT ---------- */
+let AM=[{r:'ai',t:"Hey! I'm Peerly AI ✦ Ask me for a product, a skill, or people to meet. I only recommend what's actually on Peerly."}];
+V.a=()=>{$('#v').innerHTML=`<h2>Peerly AI ✦</h2><p class="mu">Open-source: Qwen3 via Ollama, MiniLM embeddings in your browser.</p><div class="am" id="am"></div><div class="chips sc">${['Laptop under ₹60k for coding','Find someone to edit a reel','Who likes basketball and hackathons?'].map(x=>`<span class="chip" onclick="aiSend(this.textContent)">${x}</span>`).join('')}</div><div class="ab"><input class="in" id="ai" placeholder="Ask Peerly AI..." onkeydown="if(event.key=='Enter')aiSend()"><button class="btn" onclick="aiSend()">↑</button></div>`;amr()};
+function amr(){const a=$('#am');if(!a)return;a.innerHTML=AM.map(m=>`<div class="m ${m.r=='u'?'me':'th'}">${esc(m.t)}${m.s?`<small>${esc(m.s)}</small>`:''}</div>`).join('');a.lastChild&&a.lastChild.scrollIntoView({block:'nearest'})}
+async function aiSend(t){const i=$('#ai');t=(t||i.value).trim();if(!t)return;i.value='';AM.push({r:'u',t});AM.push({r:'ai',t:'Thinking…'});amr();
+ const cat=[...MARKET,...SKILLS,...LST].map(x=>`${x.name} | ${x.price} | ${x.cat} | ${x.desc} | ${x.meta}`).join('\n'),ppl=people().slice(0,12).map(p=>`${p.n} | ${p.c} | ${p.i.join(', ')}`).join('\n');
+ try{const r=await llm(t,`You are Peerly AI, a concise friendly campus assistant. Recommend ONLY from the lists below. Never invent prices, people, listings or availability. If nothing fits, say so. Under 100 words.\nMARKET AND SKILLS:\n${cat}\nPEOPLE:\n${ppl}`);AM[AM.length-1]={r:'ai',t:r,s:`via ${AIC().m} (Ollama)`}}
+ catch{const r=(await semRank(t,[...MARKET,...SKILLS,...LST],mt)).slice(0,3);AM[AM.length-1]={r:'ai',t:'Best matches on Peerly right now:\n'+r.map(x=>`• ${x.name}, ${x.price} (${x.meta})`).join('\n'),s:'offline mode: semantic search only. Start Ollama for full AI chat.'}}
+ amr()}
+/* ---------- ONBOARDING ---------- */
+function onboard(){const o=$('#ob');o.style.display='flex';
+if(OS==0)o.innerHTML=`<img src="icons/logo.png" height="96" alt=""><h1>Peerly</h1><p style="max-width:300px;line-height:1.5;font-weight:700;font-size:17px;color:var(--tx)">Your Campus. Your People. Your Marketplace.</p><button class="btn" onclick="OS=1;onboard()">Get started</button>`;
+else if(OS==1)o.innerHTML=`<h2>Let's set you up</h2><p class="mu">Use your campus email to get verified.</p><input class="in" id="oN" placeholder="Your name" value="${esc(D.name||'')}"><input class="in" id="oE" type="email" placeholder="you@college.edu" value="${esc(D.email||'')}"><input class="in" id="oC" placeholder="Course & year (e.g. B.Tech CSE, 2nd)" value="${esc(D.course||'')}"><button class="btn" onclick="o1()">Next</button>`;
+else o.innerHTML=`<h2>Pick your interests</h2><p class="mu">Choose at least 3. We'll find your matches.</p>${picker([])}<button class="btn" onclick="o2()">Finish</button>`}
+function o1(){const n=$('#oN').value.trim(),e=$('#oE').value.trim();if(!n)return toast('Enter your name');if(!/^\S+@\S+\.\S+$/.test(e))return toast('Enter a valid email');D={name:n,email:e,course:$('#oC').value.trim()};OS=2;onboard()}
+function o2(){const i=picked();if(i.length<3)return toast('Pick at least 3 interests');S.me={...D,uid:uid(),bio:'New to Peerly. Say hi! 👋',interests:i,v:/\.(edu|ac)(\.\w+)?$/i.test(D.email.split('@')[1]||'')};save();render();boot();toast(`Welcome to Peerly, ${D.name}! 🎉`)}
+/* ---------- PWA ---------- */
+function inst(){window.dp.prompt();window.dp=null;render()}
+addEventListener('beforeinstallprompt',e=>{e.preventDefault();window.dp=e;if(T=='p')render()});
+if('serviceWorker'in navigator&&location.protocol.startsWith('http'))addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+render();boot();
+</script></body></html>
