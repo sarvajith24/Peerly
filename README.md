@@ -4,14 +4,14 @@
 
 ## Team
 
-**Team Name:** [Team Name]
+**Team Name:** Bio Busters
 
 | Member | Contribution |
 | ------ | ------------ |
-| [Name] | [Contribution] |
-| [Name] | [Contribution] |
-| [Name] | [Contribution] |
-| [Name] | [Contribution] |
+| Naren Bharathwaj V (Team Leader)| Accounts and database layer,  documentation, Devpost |
+| Swathy Dwarakanath | Demo video, UI/UX design dark theme and styling, marketplace card experience |
+| Mohnish Kumar R B | Open-source AI integration and testing |
+| L.V.Sarvajith | Architecture, skill-matching algorithm and integration, profile logic |
 
 ## Problem Statement
 
@@ -80,20 +80,20 @@ flowchart LR
 
 ### Team Contributions
 
-- **[Member Name]:** [Contribution]
-- **[Member Name]:** [Contribution]
-- **[Member Name]:** [Contribution]
-- **[Member Name]:** [Contribution]
+- **Naren Bharathwaj V (Team Leader):** Built the SQLite data layer with secure sign-up and login, wrote the README, Devpost page.
+- **Swathy Dwaraknath:** Designed the dark UI, card layouts, animations and demo video 
+- **Mohnish Kumar R B:** Built ai_engine.py (Ollama + Llama 3.2) with offline fallbacks, and tested every user flow
+- **L.V.Sarvajith:** Designed the architecture, built the percentage match algorithm and integrated all modules 
 
 ## Working Application
 
-**Live Application:** https://gregarious-axolotl-c5bb2c.netlify.app
-
+**Live Application:** https://enchanting-cactus-77eb1d.netlify.app, app-debug.apk(in Github)
+Download the apk file to run the app in your device(android)
 Open the link on a phone and use Add to Home Screen (iOS Safari) or Install (Android Chrome). Test: onboard, swipe people, swipe Market items and Skills, open Campus Lobby, ask the AI tab. Open it on two devices to see live chat. The Android APK is built by GitHub Actions (see Actions tab, artifact `peerly-debug-apk`).
 
 ## Demo Video
 
-**Demo Video:** [Video URL]
+**Demo Video:** [https://youtube.com/shorts/aTFEUjoalcw?si=AZZQmxefnSPkX-PB]
 
 ## Open Source and AI Usage
 
@@ -143,10 +143,8 @@ Android APK: push to GitHub and download `peerly-debug-apk` from the Actions tab
 
 Create a profile, pick interests, swipe on People and Market, chat in Messages, and use the AI tab.
 
-## Devpost Submission
-
-**Devpost Project:** [Devpost Project URL]
-
+### Dev Post
+https://dev.to/narenmaster99/building-peerly-a-real-time-community-platform-with-messaging-and-a-marketplace-51gh
 ## Credits and License
 
 ### Credits
